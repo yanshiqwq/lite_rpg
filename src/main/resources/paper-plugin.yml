@@ -1,0 +1,4 @@
+name: rpg
+version: '${project.version}'
+main: cn.yanshiqwq.rpg.Main
+api-version: 1.19
