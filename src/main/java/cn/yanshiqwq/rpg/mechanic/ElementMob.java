@@ -18,67 +18,58 @@ public class ElementMob {
         LivingEntity attacker = (LivingEntity) event.getDamager();
         ElementType attackerType = ElementManager.getType(attacker);
         ElementType entityType = ElementManager.getType(entity);
-        switch (attackerType) {
+        if(entityType == ElementType.FIRE){
+            if (attackerType == ElementType.WATER) {
+                Effect.applyEvaporation(attacker, entity, Objects.requireNonNull(attacker.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getValue());
+            } else if (attackerType == ElementType.FROST) {
+                Effect.applyFrost(attacker, entity);
+            }
+        } else if (entityType == ElementType.WATER) {
+            if (attackerType == ElementType.FROST) {
+                Effect.applyFrost(attacker, entity);
+            }
+        }
+        switch (entityType) {
             case FROST -> {
-                return switch (entityType) {
+                return switch (attackerType) {
                     case FIRE -> 1.2;
-                    case WATER -> 0.3;
-                    case ENDER -> 1.0;
-                    default -> 0.9;
+                    case WATER -> 0.5;
+                    default -> 1.0;
                 };
             }
             case FIRE -> {
-                switch (entityType) {
-                    case WATER -> {
-                        Effect.applyEvaporation(attacker, entity, Objects.requireNonNull(attacker.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).getValue());
-                        return 1.6;
-                    }
-                    case FROST -> {
-                        Effect.applyFrost(attacker, entity);
-                        return 0.9;
-                    }
-                    case LIGHT -> {
-                        return 0.8;
-                    }
-                    default -> {
-                        return 1.0;
-                    }
-                }
+                return switch (attackerType) {
+                    case WATER -> 1.6;
+                    case FROST -> 0.5;
+                    case LIGHT -> 0.8;
+                    default -> 1.0;
+                };
             }
             case WATER -> {
-                switch (entityType) {
-                    case FROST -> {
-                        Effect.applyFrost(attacker, entity);
-                        return 1.5;
-                    }
-                    case FIRE -> {
-                        return 0.3;
-                    }
-                    case ENDER -> {
-                        return 0.5;
-                    }
-                    default -> {
-                        return 1.0;
-                    }
-                }
+                return switch (attackerType) {
+                    case FROST -> 1.5;
+                    case FIRE -> 0.3;
+                    case ENDER -> 0.8;
+                    default -> 1.0;
+                };
             }
             case ENDER -> {
-                return switch (entityType) {
+                return switch (attackerType) {
                     case WATER -> 1.5;
-                    case LIGHT -> 1.1;
+                    case LIGHT -> 1.2;
                     case DARKNESS -> 0.8;
                     default -> 1.0;
                 };
             }
             case LIGHT -> {
-                return switch (entityType) {
+                return switch (attackerType) {
                     case FIRE -> 0.8;
                     case DARKNESS -> 1.2;
                     default -> 1.0;
                 };
             }
             case DARKNESS -> {
-                return switch (entityType) {
+                return switch (attackerType) {
                     case ENDER -> 0.8;
                     case LIGHT -> 1.2;
                     default -> 1.0;

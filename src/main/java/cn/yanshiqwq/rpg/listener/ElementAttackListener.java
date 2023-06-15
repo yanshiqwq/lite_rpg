@@ -1,6 +1,7 @@
 package cn.yanshiqwq.rpg.listener;
 
 import cn.yanshiqwq.rpg.manager.ElementManager;
+import cn.yanshiqwq.rpg.mechanic.ElementMob;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,6 @@ public class ElementAttackListener implements Listener {
         if (ElementManager.getType(attacker) == null && ElementManager.getType(entity) == null){
             return;
         }
-        // TODO
+        event.setDamage(event.getDamage() * ElementMob.getDamageMultiplier(event));
     }
 }
